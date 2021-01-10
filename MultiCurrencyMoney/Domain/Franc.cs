@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Domain
 {
-    public class Dollar 
-    { 
+    public class Franc
+    {
     }
 }

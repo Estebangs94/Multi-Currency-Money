@@ -11,11 +11,36 @@ namespace UnitTests.Domain
         [Fact]
         public void TestMultiplication()
         {
-            var dollar = new Dollar(5);
+            var dollar = Money.Dollar(5);
 
-            dollar.Times(2);
-
-            Assert.Equal(10, dollar.Amount);
+            Assert.Equal(Money.Dollar(10).Amount, dollar.Times(2).Amount);
+            Assert.Equal(Money.Dollar(15).Amount, dollar.Times(3).Amount);
         }
+
+        [Fact]
+        public void TestEquality()
+        {
+            Assert.True(Money.Dollar(5).Equals(Money.Dollar(5)));
+            Assert.False(Money.Dollar(5).Equals(Money.Dollar(6)));
+            Assert.True(Money.Franc(5).Equals(Money.Franc(5)));
+            Assert.False(Money.Franc(5).Equals(Money.Franc(6)));
+            Assert.False(Money.Franc(5).Equals(Money.Dollar(5)));
+        }
+
+
+        [Fact]
+        public void TestCurrency()
+        {
+            Assert.Equal("USD", Money.Dollar(1).Currency());
+            Assert.Equal("CHF", Money.Franc(1).Currency());
+        }
+
+        [Fact]
+        public void TestAmount()
+        {
+            Assert.Equal(5, Money.Franc(5).Amount);
+            Assert.Equal(21, Money.Dollar(21).Amount);
+        }
+
     }
 }
