@@ -47,8 +47,38 @@ namespace UnitTests.Domain
         {
             Expression sum = Money.Dollar(5).Plus(Money.Dollar(5));
             Bank bank = new Bank();
-            Money reduced = Bank.Reduce(sum, "USD");
+            Money reduced = bank.Reduce(sum, "USD");
             Assert.Equal(Money.Dollar(10).Amount, reduced.Amount);
+        }
+
+        [Fact]
+        public void TestPlusRetursSum()
+        {
+            Money five = Money.Dollar(5);
+            Expression result = five.Plus(five);
+            Sum sum = (Sum)result;
+            Assert.Equal(five, sum.Augend);
+            Assert.Equal(five, sum.Addend);
+        }
+
+        [Fact]
+        public void TestReduceSum()
+        {
+            //no hay mucho por hacer, Equal no funciona igual que en JUnit, chequeamos contra properties
+            Expression sum = new Sum(Money.Dollar(3), Money.Dollar(4));
+            Bank bank = new Bank();
+            Money result = bank.Reduce(sum, "USD");
+            Assert.Equal(Money.Dollar(7).Amount, result.Amount);
+            Assert.Equal(Money.Dollar(7).Currency(), result.Currency());
+        }
+
+        [Fact]
+        public void TestReduceMoney()
+        {
+            Bank bank = new Bank();
+            Money result = bank.Reduce(Money.Dollar(1), "USD");
+            Assert.Equal(Money.Dollar(1).Amount, result.Amount);
+            Assert.Equal(Money.Dollar(1).Currency(), result.Currency());
         }
 
     }

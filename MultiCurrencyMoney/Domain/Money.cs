@@ -42,9 +42,14 @@ namespace Domain
             return currency;
         }
 
-        public Expression Plus(Money money)
+        public Expression Plus(Money addend)
         {
-            return new Money(Amount + money.Amount, currency);
+            return new Sum(this, addend);
+        }
+
+        public Money Reduce(string to)
+        {
+            throw new NotImplementedException();
         }
     }
 }
