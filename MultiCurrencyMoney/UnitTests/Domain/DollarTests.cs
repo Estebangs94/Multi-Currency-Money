@@ -42,5 +42,14 @@ namespace UnitTests.Domain
             Assert.Equal(21, Money.Dollar(21).Amount);
         }
 
+        [Fact]
+        public void TestSimpleAddition()
+        {
+            Expression sum = Money.Dollar(5).Plus(Money.Dollar(5));
+            Bank bank = new Bank();
+            Money reduced = Bank.Reduce(sum, "USD");
+            Assert.Equal(Money.Dollar(10).Amount, reduced.Amount);
+        }
+
     }
 }

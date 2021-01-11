@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Domain
 {
-    public class Money
+    public class Money : Expression
     {
         protected string currency;
 
@@ -42,5 +42,9 @@ namespace Domain
             return currency;
         }
 
+        public Expression Plus(Money money)
+        {
+            return new Money(Amount + money.Amount, currency);
+        }
     }
 }
