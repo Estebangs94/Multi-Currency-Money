@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Domain
 {
-    public interface Expression
+    public interface IExpression
     {
-        Money Reduce(string to);
+        Money Reduce(Bank bank, string to);
     }
 }

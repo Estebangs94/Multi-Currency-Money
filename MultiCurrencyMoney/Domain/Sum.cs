@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Domain
 {
-    public class Sum : Expression
+    public class Sum : IExpression
     {
         public Sum(Money augend, Money addend)
         {
@@ -12,7 +12,7 @@ namespace Domain
             Augend = augend;
         }
 
-        public Money Reduce(string to)
+        public Money Reduce(Bank bank ,string to)
         {
             int amount = Augend.Amount + Addend.Amount;
             return new Money(amount, to);

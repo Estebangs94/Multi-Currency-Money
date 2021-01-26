@@ -45,7 +45,7 @@ namespace UnitTests.Domain
         [Fact]
         public void TestSimpleAddition()
         {
-            Expression sum = Money.Dollar(5).Plus(Money.Dollar(5));
+            IExpression sum = Money.Dollar(5).Plus(Money.Dollar(5));
             Bank bank = new Bank();
             Money reduced = bank.Reduce(sum, "USD");
             Assert.Equal(Money.Dollar(10).Amount, reduced.Amount);
@@ -55,7 +55,7 @@ namespace UnitTests.Domain
         public void TestPlusRetursSum()
         {
             Money five = Money.Dollar(5);
-            Expression result = five.Plus(five);
+            IExpression result = five.Plus(five);
             Sum sum = (Sum)result;
             Assert.Equal(five, sum.Augend);
             Assert.Equal(five, sum.Addend);
@@ -65,7 +65,7 @@ namespace UnitTests.Domain
         public void TestReduceSum()
         {
             //no hay mucho por hacer, Equal no funciona igual que en JUnit, chequeamos contra properties
-            Expression sum = new Sum(Money.Dollar(3), Money.Dollar(4));
+            IExpression sum = new Sum(Money.Dollar(3), Money.Dollar(4));
             Bank bank = new Bank();
             Money result = bank.Reduce(sum, "USD");
             Assert.Equal(Money.Dollar(7).Amount, result.Amount);
@@ -77,9 +77,25 @@ namespace UnitTests.Domain
         {
             Bank bank = new Bank();
             Money result = bank.Reduce(Money.Dollar(1), "USD");
-            Assert.Equal(Money.Dollar(1).Amount, result.Amount);
-            Assert.Equal(Money.Dollar(1).Currency(), result.Currency());
+
+            Assert.True(result.Equals(Money.Dollar(1)));
         }
 
+        [Fact]
+        public void TestReduceMoneyDifferentCurrency()
+        {
+            var bank = new Bank();
+            bank.AddRate("CHF", "USD", 2);
+
+            var result = bank.Reduce(Money.Franc(2), "USD");
+
+            Assert.True(Money.Dollar(1).Equals(result));
+        }
+
+        [Fact]
+        public void TestIdentityRate()
+        {
+            Assert.Equal(1, new Bank().Rate("USD", "USD"));
+        }
     }
 }

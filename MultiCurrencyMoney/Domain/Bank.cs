@@ -6,9 +6,30 @@ namespace Domain
 {
     public class Bank
     {
-        public Money Reduce(Expression source, string to)
+        private readonly Dictionary<Pair, int> rates;
+
+        public Bank()
         {
-            return source.Reduce(to);
+            rates = new Dictionary<Pair, int>();
+        }
+
+        public Money Reduce(IExpression source, string to)
+        {
+            return source.Reduce(this, to);
+        }
+
+        public void AddRate(string from, string to, int rate)
+        {
+            rates.Add(new Pair(from, to), rate);
+        }
+
+        public int Rate(string from, string to)
+        {
+            if (from.Equals(to)) return 1;
+
+            int rate;
+            rates.TryGetValue(new Pair(from, to), out rate);
+            return rate;
         }
     }
 }

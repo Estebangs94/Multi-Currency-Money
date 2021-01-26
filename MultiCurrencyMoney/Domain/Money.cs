@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Domain
 {
-    public class Money : Expression
+    public class Money : IExpression
     {
         protected string currency;
 
@@ -42,14 +42,16 @@ namespace Domain
             return currency;
         }
 
-        public Expression Plus(Money addend)
+        public IExpression Plus(Money addend)
         {
             return new Sum(this, addend);
         }
 
-        public Money Reduce(string to)
+        public Money Reduce(Bank bank, string to)
         {
-            throw new NotImplementedException();
+            int rate = bank.Rate(currency, to);
+
+            return new Money(Amount / rate, to);
         }
     }
 }
